@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Analisis Gadai</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-gem"></i>
+                    <h1>Sistem Analisis Gadai</h1>
+                </div>
+                <button class="btn btn-primary" id="btnAnalyze">
+                    <i class="fas fa-sync"></i> Run Analysis
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h2 class="hero-title">Sistem Analisis Risiko Gadai</h2>
+                        <p class="hero-description">
+                            Sistem ini menganalisis data transaksi gadai untuk mengidentifikasi pola risiko dan membantu pengambilan keputusan bisnis. 
+                            Dengan menggunakan analisis data yang mendalam, sistem dapat mendeteksi transaksi berisiko tinggi berdasarkan nilai pinjaman, 
+                            nilai barang, dan rasio Loan-to-Value (LTV).
+                        </p>
+                        <div class="hero-features">
+                            <div class="feature-item">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Analisis Real-time</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Deteksi Risiko</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-building"></i>
+                                <span>Monitoring Outlet</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Laporan Lengkap</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="info-box">
+                            <div class="info-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <h3>Fungsi Utama</h3>
+                            <ul class="info-list">
+                                <li><i class="fas fa-check-circle"></i> Menganalisis 26,908+ transaksi</li>
+                                <li><i class="fas fa-check-circle"></i> Monitoring 92 outlet</li>
+                                <li><i class="fas fa-check-circle"></i> Deteksi transaksi berisiko tinggi</li>
+                                <li><i class="fas fa-check-circle"></i> Visualisasi data interaktif</li>
+                                <li><i class="fas fa-check-circle"></i> Laporan per outlet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="summary-section">
+                <h2 class="section-title">Ringkasan Data</h2>
+                <div class="cards-grid">
+                    <div class="card card-primary">
+                        <div class="card-icon"><i class="fas fa-file-invoice"></i></div>
+                        <div class="card-content">
+                            <div class="card-value" id="totalTransaksi">-</div>
+                            <div class="card-label">Total Transaksi</div>
+                        </div>
+                    </div>
+                    <div class="card card-info">
+                        <div class="card-icon"><i class="fas fa-store"></i></div>
+                        <div class="card-content">
+                            <div class="card-value" id="totalOutlet">-</div>
+                            <div class="card-label">Total Outlet</div>
+                        </div>
+                    </div>
+                    <div class="card card-warning">
+                        <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="card-content">
+                            <div class="card-value" id="transaksiBerisiko">-</div>
+                            <div class="card-label">Transaksi Berisiko</div>
+                        </div>
+                    </div>
+                    <div class="card card-danger">
+                        <div class="card-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="card-content">
+                            <div class="card-value" id="persenBerisiko">-</div>
+                            <div class="card-label">% Berisiko</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="charts-section">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3 class="chart-title">Status Transaksi</h3>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">Top 10 Outlet Berisiko</h3>
+                        <div class="chart-container">
+                            <canvas id="outletRiskChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="table-section">
+                <div class="section-header">
+                    <h2 class="section-title">Data Per Outlet</h2>
+                    <div class="table-controls">
+                        <input type="text" id="searchOutlet" class="search-input" placeholder="🔍 Cari outlet...">
+                        <select id="sortBy" class="sort-select">
+                            <option value="persen_berisiko">% Berisiko</option>
+                            <option value="total_pinjaman">Total Pinjaman</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="risk-info-banner">
+                    <div class="risk-info-header">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Cara Deteksi Risiko:</strong>
+                    </div>
+                    <div class="risk-criteria">
+                        <div class="criteria-item risk-high">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>RISIKO TINGGI</strong>
+                                <p>Transaksi lewat jatuh tempo ATAU pinjaman melebihi nilai barang (LTV > 100%)</p>
+                            </div>
+                        </div>
+                        <div class="criteria-item risk-medium">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <div>
+                                <strong>RISIKO SEDANG</strong>
+                                <p>Hutang masih >70% DAN durasi gadai >6 bulan (indikasi kesulitan bayar)</p>
+                            </div>
+                        </div>
+                        <div class="criteria-item risk-low">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>RISIKO RENDAH</strong>
+                                <p>Transaksi normal dengan pembayaran lancar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="risk-note">
+                        <i class="fas fa-lightbulb"></i>
+                        <em>LTV (Loan to Value) = (Nilai Pinjaman / Nilai Barang) × 100%. Bukan berdasarkan besar pinjaman!</em>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Outlet</th>
+                                <th>Total Transaksi</th>
+                                <th>Total Pinjaman</th>
+                                <th>% Berisiko</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="outletsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Sistem Analisis Gadai | Last updated: <span id="lastUpdated">-</span></p>
+        </div>
+    </footer>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
