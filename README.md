@@ -36,17 +36,39 @@ gadai_bigdata/
 
 ## 🚀 Cara Pakai
 
-### 1. Install Dependencies
+### 1. Clone Repository
 ```bash
-pip install pandas openpyxl matplotlib seaborn numpy
+git clone https://github.com/rafikary/analisis_resiko_gadai.git
+cd analisis_resiko_gadai
 ```
 
-### 2. Jalankan Sistem
+### 2. Setup Virtual Environment (Opsional tapi Disarankan)
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Linux/Mac
+source .venv/bin/activate
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Jalankan Processing Data
+**PENTING: Jalankan ini dulu untuk generate output files!**
 ```bash
 python main.py
 ```
 
-### 3. Lihat Hasil
+### 5. Jalankan Web Dashboard (Opsional)
+```bash
+python app.py
+```
+Buka browser: http://localhost:5000
+
+### 6. Lihat Hasil
 Output akan tersimpan di folder `output/`:
 - `gadai_processed.csv` - Data lengkap hasil processing
 - `outlet_summary.csv` - Summary per outlet
