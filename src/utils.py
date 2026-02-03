@@ -5,13 +5,12 @@ import pandas as pd
 from typing import Optional
 
 
-def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
+def normalize_columns(columns):
     """Normalize column names to lowercase and replace spaces with underscores"""
-    df.columns = df.columns.str.lower().str.replace(' ', '_')
-    return df
+    return columns.str.lower().str.replace(' ', '_')
 
 
-def find_column(df: pd.DataFrame, *possible_names: str) -> Optional[str]:
+def find_column(df: pd.DataFrame, possible_names: list) -> Optional[str]:
     """Find column name from possible variations"""
     for name in possible_names:
         if name in df.columns:

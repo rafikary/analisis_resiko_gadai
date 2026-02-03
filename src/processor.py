@@ -20,12 +20,12 @@ def process_data(df):
     """
     print_section("STEP 2: PROCESSING DATA")
     
-    # Auto-detect kolom penting
-    col_pinjaman = find_column(df, ["pinjaman", "nilai pinjam", "loan", "outstanding pokok"])
-    col_jaminan = find_column(df, ["jaminan pokok", "pokok"])
-    col_terbayar = find_column(df, ["pokok terbayar", "terbayar"])
-    col_tanggal = find_column(df, ["tanggal gadai", "tanggal"])
-    col_tanggal_jt = find_column(df, ["jt", "jatuh tempo"])
+    # Auto-detect kolom penting (sudah dalam format normalized: lowercase + underscore)
+    col_pinjaman = find_column(df, ["pokok_pinjaman", "pinjaman", "nilai_pinjam", "loan", "outstanding_pokok"])
+    col_jaminan = find_column(df, ["nilai_jaminan", "jaminan_pokok", "pokok", "jaminan"])
+    col_terbayar = find_column(df, ["pokok_terbayar", "terbayar"])
+    col_tanggal = find_column(df, ["tanggal_gadai", "tanggal"])
+    col_tanggal_jt = find_column(df, ["tanggal_jt", "jt", "jatuh_tempo"])
     col_outlet = find_column(df, ["outlet", "cabang"])
     
     col_mapping = {
@@ -50,11 +50,11 @@ def process_data(df):
     
     # Type casting
     print("\n✓ Type casting...")
-    df[col_mapping["tanggal"]] = clean_datetime(df[col_mapping["tanggal"]])
-    df[col_mapping["tanggal_jt"]] = clean_datetime(df[col_mapping["tanggal_jt"]])
-    df[col_mapping["pinjaman"]] = clean_numeric(df[col_mapping["pinjaman"]])
-    df[col_mapping["jaminan"]] = clean_numeric(df[col_mapping["jaminan"]])
-    df[col_mapping["terbayar"]] = clean_numeric(df[col_mapping["terbayar"]])
+    df[col_mapping["tanggal"]] = pd.to_datetime(df[col_mapping["tanggal"]], errors='coerce')
+    df[col_mapping["tanggal_jt"]] = pd.to_datetime(df[col_mapping["tanggal_jt"]], errors='coerce')
+    df[col_mapping["pinjaman"]] = pd.to_numeric(df[col_mapping["pinjaman"]], errors='coerce')
+    df[col_mapping["jaminan"]] = pd.to_numeric(df[col_mapping["jaminan"]], errors='coerce')
+    df[col_mapping["terbayar"]] = pd.to_numeric(df[col_mapping["terbayar"]], errors='coerce')
     
     # Feature engineering
     print("✓ Feature engineering...")
