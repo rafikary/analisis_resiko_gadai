@@ -36,11 +36,6 @@ ENV/
 *.swo
 *~
 
-# Data files
-data/*.xlsx
-data/*.xls
-data/*.csv
-
 # Output files (keep structure, ignore data)
 output/*.csv
 output/*.txt
